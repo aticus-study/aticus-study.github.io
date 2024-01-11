@@ -595,8 +595,11 @@ header img {
 	}
 	#proceed-button, #back-button {
 		width: 30vw;
-		height: 15vh;
+		height: 5cm;
 		flex-direction: column;
+	}
+	#button-container {
+		bottom: 10vh;
 	}
 	#back-button {
 		flex-direction: column-reverse;
@@ -609,19 +612,19 @@ header img {
 		top: 2vh;
 	}
 	#reverse-button, .button {
-		bottom: 12vh;
+		bottom: 17vh;
 		padding: 1vh 2vh;
 	}
 	.body-diagram-wrapper {
-		height: 30vw;
-		width: 30vw;
+		height: 25vw;
+		width: 25vw;
 		bottom: auto;
 		top: 16vh;
 		right: auto;
 		left: 15vw !important;
 	}
 	.body-diagram-wrapper.reversed {
-		top: 31vh;
+		top: 23vh;
 		left: auto !important;
 		right: 15vw;
 	}
@@ -629,12 +632,13 @@ header img {
 		top: auto;
 		left: auto !important;
 		bottom: -15vh;
-		right: 10vw;
+		right: 7.5vw;
+		text-align: center;
 	}
 	.reversed div#body-diagram-viewname {
 		left: auto !important;
-		top: -4vh;
-		right: 10vw;
+		top: -3vh;
+		right: 7.5vw;
 	}
 	.lengthened {
 		height: 10vh;
