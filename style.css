@@ -659,7 +659,7 @@ header img {
 	}
 	.faq-text {
 		text-align: center;
-		font-size: 1.3rem;
+		font-size: 1.6rem;
 		width: 80vw;
 	}
 	#FTU-graphic {
@@ -672,6 +672,12 @@ header img {
 	#two-week-ftu {
 		margin-top:1vh;
 		margin-bottom: 25vh;
+	}
+	#ftu-amount-container span {
+		font-size: 1.05rem;
+	}
+	h2#ftu-explanation {
+		font-size: rem;
 	}
 }
 
