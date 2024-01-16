@@ -533,7 +533,7 @@ header img {
 	display: flex;
 	justify-content: space-between;
 }
-#final-page-parent {
+#final-page-parent > div {
 	height:45vh;
 	display:grid;
 	grid-template-columns: 1fr 1fr;
@@ -650,6 +650,7 @@ header img {
 		display:block;
 	}
 	#final-page-parent > div {
+		height: auto !important;
 		width: 100vw;
 		display:flex;
 		flex-direction: column-reverse;
