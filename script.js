@@ -393,7 +393,7 @@ function proceedToCalculation() {
 	document.getElementById("total-ftu").innerHTML = "In total, that is approximately <b>"+regionFTUSum+" Finger Tip Units (FTUs)</b> per treatment.";
 
 	accumulatedTime++;
-	document.getElementById("one-week-ftu").innerHTML = "If applied twice daily, that is <b>"+Math.round(regionFTUSum*2*7*.5)+"g</b> of topical steroid for 1 week.";
+	document.getElementById("one-week-ftu").innerHTML = "If applied twice daily, that is <b>"+Math.round(regionFTUSum*2*7*.5)+"g</b> of topical steroid for 1 week";
 	document.getElementById("one-week-ftu").classList.add("start-anim");
 	document.getElementById("one-week-ftu").style["animation-delay"] = (accumulatedTime)/10+.4+'s';
 	document.getElementById("two-week-ftu").innerHTML = "and <b>"+Math.round(regionFTUSum*2*7*.5*2)+"g</b> of topical steroid for 2 weeks.";
