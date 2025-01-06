@@ -58,13 +58,16 @@ function openAgeSexPrompt() {
 	document.getElementById("main-page1-dialog").classList.add("hidden")
 	document.getElementById("secondary-page1-dialog").classList.remove("hidden")
 	shouldAutofillHW = true;
-	document.getElementById("proceed-button").classList.add("hidden")
+	document.getElementById("proceed-button").classList.add("hidden");
+	document.getElementById("restart-button-bar").classList.add("hidden");
 }
 function closeAgeSexPrompt() {
 	shouldAutofillHW = false;
 	showProceedForPg1Inputs()
 	document.getElementById("main-page1-dialog").classList.remove("hidden")
 	document.getElementById("secondary-page1-dialog").classList.add("hidden")
+	if (!document.getElementById("restart-button").classList.contains("hidden"))
+		document.getElementById("restart-button-bar").classList.remove("hidden");
 }
 
 function onAgeYearsInputUpdate(el) {
@@ -141,7 +144,7 @@ function getNaNCheckedValue(v) {
 }
 
 function autofillHeightAndWeight() {
-	document.getElementById("restart-button").classList.remove("hidden")
+	Array.from(document.getElementsByClassName("restart-button")).forEach(button => button.classList.remove("hidden"));
 	doTransitionAndAgeComputation();
 	proceedButton.classList.remove('hidden');
 
@@ -151,7 +154,7 @@ function autofillHeightAndWeight() {
 	if (patientData.age_years == undefined)
 		patientData.age_years = getNaNCheckedValue(parseInt(document.getElementById("age-input-years").value));
 
-	document.getElementById("ftu-explanation").innerHTML = `For an average ${sex} `+(patientData.age_years == 0 ? `${months} month` : `${patientData.age_years} year`)+' old, you can use:'
+	document.getElementById("ftu-explanation").innerHTML = `For an average ${sex} `+(patientData.age_years == 0 ? `${months} month` : `${patientData.age_years} year`)+' old, you can:'
 
 	var el = (sex == "male" ? boysAvgHW : girlsAvgHW)[patientData.age_years*12+months]
 	patientData.weight = el[0];
@@ -290,7 +293,7 @@ function doTransitionAndAgeComputation() {
 
 
 function proceedToCalculation() {
-	document.getElementById("restart-button").classList.remove("hidden")
+	Array.from(document.getElementsByClassName("restart-button")).forEach(button => button.classList.remove("hidden"));
 	// if proceeding from page-1
 	if (!document.getElementById("page-1").classList.contains("fadeout")) {
 		doTransitionAndAgeComputation();
@@ -311,7 +314,7 @@ function proceedToCalculation() {
 		patientData.weight = kg;
 		patientData.height = cm;
 		// console.log(patientData)
-		document.getElementById("ftu-explanation").innerHTML = `For a child ${Math.round((patientData.weight_lbs+ounces/16)*10)/10} lbs and ${patientData.height_feet*12+inches} in, you can use:`
+		document.getElementById("ftu-explanation").innerHTML = `For a child ${Math.round((patientData.weight_lbs+ounces/16)*10)/10} lbs and ${patientData.height_feet*12+inches} in, you can:`
 		return
 	}
 
@@ -358,6 +361,14 @@ function proceedToCalculation() {
 	patientData.front_affected_areas.forEach(calculateAreas)
 	patientData.back_affected_areas.forEach(calculateAreas)
 
+	accumulatedTime++;
+	document.getElementById("total-ftu").style["animation-delay"] = (accumulatedTime)/10+.4+'s';
+	accumulatedTime++;
+	document.getElementById("one-week-ftu").style["animation-delay"] = (accumulatedTime)/10+.4+'s';
+	document.getElementById("two-week-ftu").style["animation-delay"] = (accumulatedTime)/10+.4+'s';
+	accumulatedTime++;
+	document.getElementById("ftu-explanation").classList.add("start-anim");
+	document.getElementById("ftu-explanation").style["animation-delay"] = (accumulatedTime)/10+.4+'s';
 	// console.log(areaTotals)
 	var regionFTUSum = 0;
 	for (var t of areaTotals) {
@@ -387,18 +398,15 @@ function proceedToCalculation() {
 		instructionContainer.appendChild(instruction)
 	}
 	document.getElementById("total-ftu").classList.add("start-anim");
-	accumulatedTime++;
-	document.getElementById("total-ftu").style["animation-delay"] = (accumulatedTime)/10+.4+'s';
 	regionFTUSum = Math.round(regionFTUSum)
-	document.getElementById("total-ftu").innerHTML = "In total, that is approximately <b>"+regionFTUSum+" Finger Tip Units (FTUs)</b> per treatment.";
+	document.getElementById("total-ftu").innerHTML = "In total, you can use approximately <b>"+regionFTUSum+" Finger Tip Units (FTUs)</b> per treatment.";
 
-	accumulatedTime++;
+	
 	document.getElementById("one-week-ftu").innerHTML = "If applied twice daily, that is <b>"+Math.round(regionFTUSum*2*7*.5)+"g</b> of topical steroid for 1 week";
 	document.getElementById("one-week-ftu").classList.add("start-anim");
-	document.getElementById("one-week-ftu").style["animation-delay"] = (accumulatedTime)/10+.4+'s';
 	document.getElementById("two-week-ftu").innerHTML = "and <b>"+Math.round(regionFTUSum*2*7*.5*2)+"g</b> of topical steroid for 2 weeks.";
 	document.getElementById("two-week-ftu").classList.add("start-anim");
-	document.getElementById("two-week-ftu").style["animation-delay"] = (accumulatedTime)/10+.4+'s';
+	
 
 	document.getElementById("page-2").classList.add("fadeout")
 	document.getElementById("page-3").classList.add("fadein")
@@ -475,7 +483,7 @@ function restartProgress(button) {
 
 	loadTextAnswers()
 
-	button.classList.add("hidden")
+	Array.from(document.getElementsByClassName("restart-button")).forEach(button => button.classList.add("hidden"));
 
 	closeAgeSexPrompt()
 

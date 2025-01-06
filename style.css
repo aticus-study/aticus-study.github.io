@@ -67,8 +67,10 @@ h3.instruction-text {
 	font-family: 'Montserrat',sans-serif;
 
 }
-h2#ftu-explanation {
+span#ftu-explanation {
 	padding: 0 2vw;
+	font-size: 2rem;
+	font-weight: bold;
 }
 .age-select-option, #ftu-instructions span {
 	display: block;
@@ -95,21 +97,29 @@ span.start-anim {
  	font-size: 2rem;
  }
 
+#total-ftu {
+	margin-top: 1vh;
+}
+#one-week-ftu {
+	margin-top: .5vh;
+}
  #total-ftu,#one-week-ftu,#two-week-ftu {
- 	font-size: 2.2rem;
- 	margin-top: 3rem;
+ 	font-size: 2.4rem;
 	padding: 0 2vw;
 	color: #333333;
  }
- #one-week-ftu:before {
+ #one-week-ftu,#two-week-ftu {
+ 	font-size: 1.9rem;
+ }
+ #two-week-ftu:after {
 	content: "";
 	display: block;
 	width: 100%;
 	margin: auto;
 	height: 1px;
 	background: black;
-	margin-bottom: 3vh;
-	margin-top: 5vh;
+	margin-bottom: 2vh;
+	margin-top: 3vh;
  }
 
 .age-select-option:before {
@@ -241,7 +251,7 @@ div#body-diagram-viewname:not(.reversed div#body-diagram-viewname) {
 #reverse-button, .button {
 	bottom: 2vh;
 }
-#restart-button i {
+.restart-button i {
 	font-size: 3rem;
 }
 #restart-button {
@@ -252,10 +262,10 @@ div#body-diagram-viewname:not(.reversed div#body-diagram-viewname) {
 	top: 13vh;
 	right: 4vw;
 }
-#restart-button span {
+.restart-button span {
 	margin-top: 1rem;
 }
-#restart-button:hover {
+.restart-button:hover {
 	transform: scale(1.1);
 }
 
@@ -271,7 +281,7 @@ div#body-diagram-viewname:not(.reversed div#body-diagram-viewname) {
 	height: 20vh;
 }
 
-#proceed-button, #back-button {
+#proceed-button, #back-button, #restart-button-bar {
 	width: 15vw;
 	background: #1E4F91;
 	color: white;
@@ -284,8 +294,12 @@ div#body-diagram-viewname:not(.reversed div#body-diagram-viewname) {
 	border-radius: 5px;
 }
 
+#restart-button-bar {
+	width: 10vw;
+}
 
-#reverse-button i, #proceed-button i, #back-button i {
+
+#reverse-button i, #proceed-button i, #back-button i, #restart-button-bar i {
 	font-size: 1.8rem;
 }
 
@@ -293,7 +307,7 @@ div#body-diagram-viewname:not(.reversed div#body-diagram-viewname) {
 	font-size: 3.4rem;
 	margin-right: 10px;
 }
-#reverse-button span, #proceed-button span, #back-button span {
+#reverse-button span, #proceed-button span, #back-button span, #restart-button-bar span {
 	margin-top: .4rem;
 	font-size: 1.4rem;
 	margin-bottom: .3vw;
@@ -305,11 +319,11 @@ div#body-diagram-viewname:not(.reversed div#body-diagram-viewname) {
 }
 
 
-#restart-button:hover,#reverse-button:hover, #proceed-button:hover, #back-button:hover, .button:hover {
+.restart-button:hover,#reverse-button:hover, #proceed-button:hover, #back-button:hover, .button:hover {
 	transform: scale(1.03);
 	cursor: pointer;
 }
-#restart-button:active,#reverse-button:active, #proceed-button:active, #back-button:active, .button:active {
+.restart-button:active,#reverse-button:active, #proceed-button:active, #back-button:active, .button:active {
 	transform: scale(.97);
 }
 
@@ -400,7 +414,7 @@ header img {
 	justify-content: space-around;
 }
 .child-information-container-field {
-	font-size: 1.3rem;
+	font-size: 1.9rem;
 }
 
 
@@ -539,8 +553,12 @@ header img {
 	grid-template-columns: 1fr 1fr;
 }
 .ftu-amount-container {
-	height:50vh;
+	height:45vh;
+	margin-right: .6vw;
 	overflow-y: scroll;
+}
+.restart-button {
+	background: #e83a2a !important;
 }
 
 
@@ -593,9 +611,9 @@ header img {
 		width: 90vh;
 		left: 0;
 	}
-	#proceed-button, #back-button {
+	#proceed-button, #back-button, #restart-button-bar {
 		width: 30vw;
-		height: 5cm;
+		height: 13vh;
 		flex-direction: column;
 	}
 	#button-container {
@@ -607,7 +625,10 @@ header img {
 	#proceed-button i, #back-button i {
 		font-size: 6rem;
 	}
-	#restart-button {
+	#restart-button-bar i {
+		font-size: 4rem;
+	}
+	.restart-button {
 		background-color: rgba(30, 80, 145, 0.9);
 		top: 2vh;
 	}
@@ -672,15 +693,20 @@ header img {
 	}
 	#two-week-ftu {
 		margin-top:1vh;
-		margin-bottom: 25vh;
+		margin-bottom: 3vh;
 	}
 	#ftu-amount-container span {
 		font-size: 1.05rem;
 	}
-	h2#ftu-explanation {
-		font-size: rem;
+	#ftu-amount-container {
+		margin-bottom: 50vh;
+		padding: 0 1vw;
+	}
+	span#ftu-explanation {
+		font-size: 1.8rem;
 	}
 }
+
 
 
 

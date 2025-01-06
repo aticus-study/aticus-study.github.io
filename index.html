@@ -43,7 +43,7 @@
     </div>
 
     <div id="pages-container">
-    <button class="hidden" id="restart-button" onclick = "restartProgress(this);">
+    <button class="hidden restart-button" id="restart-button" onclick = "restartProgress(this);">
       <i class="fa-solid fa-arrows-rotate"></i>
         <span>Restart</span>
       </button>
@@ -52,6 +52,11 @@
     		<i class="fa-solid fa-caret-left"></i>
     		<span>Go Back</span>
     	</button>
+
+      <button id = "restart-button-bar" class="hidden restart-button interactible" onclick = "restartProgress(this);">
+      <i class="fa-solid fa-arrows-rotate"></i>
+        <span>Restart</span>
+      </button>
 
     	<button id="proceed-button" class="hidden interactible" onclick = "proceedToCalculation(this);">
     			<span>Next Step</span>
@@ -75,10 +80,11 @@
             <input id = "height-input-feet" oninput="onHeightFeetInputUpdate(this);" name='height-input' value=0 type='number' min = 0> feet <input oninput="updateStorage(this, 'height_inches');showProceedForPg1Inputs();" id='height-input-inches' type='number' value=0 min = 0> inches
           </div>
         </div>  
-        <button id="open-autofill-button" onclick = "openAgeSexPrompt();">Click here to instead use the average weight and height for your child's age and sex.</button>
+        <button id="open-autofill-button" onclick = "openAgeSexPrompt();">No Weight or Height? Click for Average</button>
       </div>
 
       <div class="child-information-container hidden" id="secondary-page1-dialog">
+        <h3><i>Enter Sex and Age to use Average</i></h3>
         <div class="child-information-fields-parent">
        <div class="child-information-container-field">
           <label for='sex-input'>Sex</label><br>
@@ -358,21 +364,23 @@
         <h3 class="instruction-text" style="margin: 0;">Please visit our <a href="./faq.html">frequently asked questions page</a> to learn more about topical steroids.
         </h3>
         <br>
+        <h3 class="instruction-text" style="margin: 0; font-size: 1.5rem;"><a href="./ruler.html">Not sure about Finger Tip Unit (FTU) size? Try the FTU ruler.</a>
+        </h3>
 
       </div>
   		
       <div id="final-page-parent">
         <div>
-          <div id="ftu-amount-container">
-            <h2 id="ftu-explanation">For an average 5 year old you can use:</h2>
-            <div id="ftu-instructions">
-
-            </div>
+          <div id="ftu-amount-container" class="ftu-amount-container">
             <div style="display: flex;
             flex-direction: column;">
               <span id = "total-ftu"></span>
               <span id = "one-week-ftu"></span>
               <span id = "two-week-ftu"></span>
+            </div>
+            <span id="ftu-explanation">For an average 5 year old you can:</span>
+            <div id="ftu-instructions">
+
             </div>
           </div>
           <div class="FTU-instruction-container">
