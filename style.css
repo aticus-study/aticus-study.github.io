@@ -628,6 +628,9 @@ header img {
 	#restart-button-bar i {
 		font-size: 4rem;
 	}
+	#restart-button {
+		top: 15px;
+	}
 	.restart-button {
 		background-color: rgba(30, 80, 145, 0.9);
 		top: 2vh;
@@ -662,7 +665,7 @@ header img {
 		right: 7.5vw;
 	}
 	.lengthened {
-		height: 10vh;
+		height: 15vh;
 	}
 	#final-page-parent {
 		height:75vh;

@@ -59,15 +59,12 @@ function openAgeSexPrompt() {
 	document.getElementById("secondary-page1-dialog").classList.remove("hidden")
 	shouldAutofillHW = true;
 	document.getElementById("proceed-button").classList.add("hidden");
-	document.getElementById("restart-button-bar").classList.add("hidden");
 }
 function closeAgeSexPrompt() {
 	shouldAutofillHW = false;
 	showProceedForPg1Inputs()
 	document.getElementById("main-page1-dialog").classList.remove("hidden")
 	document.getElementById("secondary-page1-dialog").classList.add("hidden")
-	if (!document.getElementById("restart-button").classList.contains("hidden"))
-		document.getElementById("restart-button-bar").classList.remove("hidden");
 }
 
 function onAgeYearsInputUpdate(el) {
@@ -177,6 +174,7 @@ function goBackOneStep(button) {
 		proceedButton.classList.remove('hidden');
 		document.getElementById("total-ftu").classList.remove("start-anim");
 	} else if (document.getElementById("page-1").classList.contains("fadeout")) {
+		document.getElementById("restart-button-bar").classList.add("hidden");
 		document.getElementById("page-1").classList.remove("fadeout")
 		document.getElementById("page-2").classList.add("hidden")
 		document.getElementById("page-2").classList.remove("fadein")
