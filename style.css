@@ -71,6 +71,7 @@ span#ftu-explanation {
 	padding: 0 2vw;
 	font-size: 2rem;
 	font-weight: bold;
+	display: block;
 }
 .age-select-option, #ftu-instructions span {
 	display: block;
@@ -461,11 +462,13 @@ header img {
 
 #FTU-graphic {
 	display: block;
-	width: 30vw;
+	width: 20vw;
 	padding-right: 2vw;
 }
 .FTU-instruction-container {
+	width: 30vw;
 	display: flex;
+	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
 	height: 100%;
@@ -536,6 +539,12 @@ header img {
 	font-size: 2.4rem;
 	padding: 10px 20px;
 }
+.modal-body .button {
+	left: 30%;
+	right: 30%;
+	justify-content: center;
+	bottom: 15vh;
+}
 
 #button-container {
 	pointer-events: none;
@@ -550,7 +559,7 @@ header img {
 #final-page-parent > div {
 	height:45vh;
 	display:grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: 3fr 1fr;
 }
 .ftu-amount-container {
 	height:45vh;
@@ -561,6 +570,9 @@ header img {
 	background: #e83a2a !important;
 }
 
+#age-error, #months-error, #nonsensical-hw-error {
+	display: block;
+}
 
 @media only screen and (max-device-width: 480px) {
 	.modal-body {
@@ -681,6 +693,7 @@ header img {
 	}
 	.FTU-instruction-container {
 		flex-direction: column;
+		width: 100vw;
 	}
 	.faq-text {
 		text-align: center;
@@ -711,6 +724,12 @@ header img {
 	#ftu-instructions {
 		font-size: 1.8rem;
 	}
+	.modal-body .button {
+		left: 30%;
+		right: 30%;
+		justify-content: center;
+		bottom: 5vh;
+	}
 }
 
 
@@ -723,6 +742,6 @@ header img {
 
 
 .hidden {
-	display: hidden;
+	display: none !important;
 	pointer-events: none;
 }

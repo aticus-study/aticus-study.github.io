@@ -95,6 +95,13 @@ function updateAutofillButton() {
 		document.getElementById('age-error').classList.add('hidden')
 		document.getElementById('autofill-button').disabled = !(document.getElementById("sex-input").value != 'none' && document.getElementById("sex-input").value != '' && (document.getElementById("age-input-years").value != 0 || document.getElementById("age-input-months").value != 0))
 	}
+	if (patientData.age_years != 0 && months >= 12) {
+		document.getElementById('months-error').classList.remove('hidden')
+		document.getElementById('autofill-button').disabled = true;
+	} else {
+		document.getElementById('months-error').classList.add('hidden')
+		document.getElementById('autofill-button').disabled = !(document.getElementById("sex-input").value != 'none' && document.getElementById("sex-input").value != '' && (document.getElementById("age-input-years").value != 0 || document.getElementById("age-input-months").value != 0))
+	}
 }
 
 
@@ -116,7 +123,9 @@ function onHeightFeetInputUpdate(el) {
 }
 
 function showProceedForPg1Inputs() {
-	if ((parseInt(document.getElementById("height-input-feet").value)*12+parseInt(document.getElementById("height-input-inches").value))*2.54 > 124) {
+	var heightInInches = getNaNCheckedValue(parseInt(document.getElementById("height-input-feet").value))*12+getNaNCheckedValue(parseInt(document.getElementById("height-input-inches").value));
+	var weightInOunces = getNaNCheckedValue(parseInt(document.getElementById("weight-input-pounds").value))*16 + getNaNCheckedValue(parseInt(document.getElementById("weight-input-ounces").value));
+	if (heightInInches*2.54 > 124) {
 		document.getElementById('adult-front-parent').classList.remove("hidden");
 		document.getElementById('adult-back-parent').classList.remove("hidden");
 		document.getElementById('front-parent').classList.add("hidden");
@@ -129,11 +138,17 @@ function showProceedForPg1Inputs() {
 	}
 
 	// console.log(document.getElementById("weight-input-pounds").value, document.getElementById("weight-input-ounces").value, document.getElementById("height-input-feet").value, document.getElementById("height-input-inches").value,(document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
-
-	if ((document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
-		proceedButton.classList.remove('hidden');
-	else
+	if (heightInInches > 0 && weightInOunces > 0 && (heightInInches < 17 || weightInOunces < 6 || heightInInches > 78 || weightInOunces > 4800)) {
+		document.getElementById('nonsensical-hw-error').classList.remove('hidden')
 		proceedButton.classList.add('hidden');
+	} else {
+		document.getElementById('nonsensical-hw-error').classList.add('hidden')
+		if ((document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
+			proceedButton.classList.remove('hidden');
+		else
+			proceedButton.classList.add('hidden');
+	}
+
 }
 
 function getNaNCheckedValue(v) {
@@ -151,7 +166,7 @@ function autofillHeightAndWeight() {
 	if (patientData.age_years == undefined)
 		patientData.age_years = getNaNCheckedValue(parseInt(document.getElementById("age-input-years").value));
 
-	document.getElementById("ftu-explanation").innerHTML = `For an average ${sex} `+(patientData.age_years == 0 ? `${months} month` : `${patientData.age_years} year`)+' old, you can:'
+	document.getElementById("ftu-explanation").innerHTML = `For the areas you selected in the previous page, you can use the following amounts on an average ${sex} `+(patientData.age_years == 0 ? `${months} month` : `${patientData.age_years} year`)+'-old:'
 
 	var el = (sex == "male" ? boysAvgHW : girlsAvgHW)[patientData.age_years*12+months]
 	patientData.weight = el[0];
@@ -235,28 +250,44 @@ function reverseBodyDiagram(button) {
 	})
 }
 var percentageDataTable = {
-	"3-11 months" : {'A' : 1.25,'B' : 1.25,'C' : 11.5,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 2.25,'S' : 1,'T' : 2,'U' : 1.75,'V' : 2.25,'W' : 1,'X' : 2,'Y' : 1.75,'C' : 11.5,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 2.25,'Sp' : 1,'Tp' : 2,'Up' : 1.75,'Vp' : 2.25,'Wp' : 1,'Xp' : 2,'Yp' : 1.75},
-	"1-5 years" : {'A' : 1.25,'B' : 1.25,'C' : 10,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 2.75,'S' : 1,'T' : 2,'U' : 1.75,'V' : 2.75,'W' : 1,'X' : 2,'Y' : 1.75,'C' : 10,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 2.75,'Sp' : 1,'Tp' : 2,'Up' : 1.75,'Vp' : 2.75,'Wp' : 1,'Xp' : 2,'Yp' : 1.75},
-	"6-7.5 years" : {'A' : 1.25,'B' : 1.25,'C' : 8,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 3.5,'S' : 1,'T' : 2.25,'U' : 1.75,'V' : 3.5,'W' : 1,'X' : 2.25,'Y' : 1.75,'C' : 8,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 3.5,'Sp' : 1,'Tp' : 2.25,'Up' : 1.75,'Vp' : 3.5,'Wp' : 1,'Xp' : 2.25,'Yp' : 1.75},
-	"7.5-14.9 years" : {'A' : 1.25,'B' : 1.25,'C' : 6.5,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 3.75,'S' : 1,'T' : 2.5,'U' : 1.75,'V' : 3.75,'W' : 1,'X' : 2.5,'Y' : 1.75,'C' : 6.5,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 3.75,'Sp' : 1,'Tp' : 2.5,'Up' : 1.75,'Vp' : 3.75,'Wp' : 1,'Xp' : 2.5,'Yp' : 1.75},
-	'15-17.9 years' : {'A' : 1.25,'B' : 1.25,'C' : 5.5,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 4,'S' : 1,'T' : 2.75,'U' : 1.75,'V' : 4,'W' : 1,'X' : 2.75,'Y' : 1.75,'C' : 5.5,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 4,'Sp' : 1,'Tp' : 2.75,'Up' : 1.75,'Vp' : 4,'Wp' : 1,'Xp' : 2.75,'Yp' : 1.75},
-	'18+ years' : {'A' : 1.25,'B' : 1.25,'C' : 4,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 4.25,'S' : 1,'T' : 3,'U' : 1.75,'V' : 4.25,'W' : 1,'X' : 3,'Y' : 1.75,'C' : 4,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 4.25,'Sp' : 1,'Tp' : 3,'Up' : 1.75,'Vp' : 4.25,'Wp' : 1,'Xp' : 3,'Yp' : 1.75}
+	"3-11 months" : {'A' : 1.25,'B' : 1.25,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 2.25,'S' : 1,'V' : 2.25,'W' : 1,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 2.25,'Sp' : 1,'Vp' : 2.25,'Wp' : 1,'Yp' : 1.75,'I'  : 1.2,'Ip'  : 1.2,'J'  : 1.2,'Jp'  : 1.2,'H'  : .85,'Hp'  : .85,'K'  : .85,'Kp'  : .85,'Wa' : .2,'Wap' : .2,'Wb' : .2,'Wbp' : .2,'Y'  : 1.7,'Yp'  : 1.7,'U'  : 1.7,'Up'  : 1.7,'X'  : 1.8,'Xp'  : 1.8,'T'  : 1.8,'Tp'  : 1.8,'Aa' : .25,'Aap' : .25,'Ab' : .25,'Abp' : .25,'Fo' : 1.7,'C'   : 2.8,'Cp' : 8.7},
+	"1-5 years" : {'A' : 1.25,'B' : 1.25,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 2.75,'S' : 1,'V' : 2.75,'W' : 1,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 2.75,'Sp' : 1,'Vp' : 2.75,'Wp' : 1,'Yp' : 1.75,'I'  : 1.2,'Ip'  : 1.2,'J'  : 1.2,'Jp'  : 1.2,'H'  : .85,'Hp'  : .85,'K'  : .85,'Kp'  : .85,'Wa' : .2,'Wap' : .2,'Wb' : .2,'Wbp' : .2,'Y'  : 1.7,'Yp'  : 1.7,'U'  : 1.7,'Up'  : 1.7,'X'  : 1.8,'Xp'  : 1.8,'T'  : 1.8,'Tp'  : 1.8,'Aa' : .25,'Aap' : .25,'Ab' : .25,'Abp' : .25,'Fo' : 1.4,'C'   : 2.5,'Cp' : 7.5},
+	"6-7.5 years" : {'A' : 1.25,'B' : 1.25,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 3.5,'S' : 1,'V' : 3.5,'W' : 1,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 3.5,'Sp' : 1,'Vp' : 3.5,'Wp' : 1,'Yp' : 1.75,'I'  : 1.2,'Ip'  : 1.2,'J'  : 1.2,'Jp'  : 1.2,'H'  : .85,'Hp'  : .85,'K'  : .85,'Kp'  : .85,'Wa' : .2,'Wap' : .2,'Wb' : .2,'Wbp' : .2,'Y'  : 1.7,'Yp'  : 1.7,'U'  : 1.7,'Up'  : 1.7,'X'  : 2.05,'Xp'  : 2.05,'T'  : 2.05,'Tp'  : 2.05,'Aa' : .25,'Aap' : .25,'Ab' : .25,'Abp' : .25,'Fo' : 1.2,'C'   : 2,'Cp' : 6},
+	"7.5-14.9 years" : {'A' : 1,'B' : 1,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 3.75,'S' : 1,'V' : 3.75,'W' : 1,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 3.75,'Sp' : 1,'Vp' : 3.75,'Wp' : 1,'Yp' : 1.75,'I'  : 1.2,'Ip'  : 1.2,'J'  : 1.2,'Jp'  : 1.2,'H'  : .85,'Hp'  : .85,'K'  : .85,'Kp'  : .85,'Wa' : .2,'Wap' : .2,'Wb' : .2,'Wbp' : .2,'Y'  : 1.7,'Yp'  : 1.7,'U'  : 1.7,'Up'  : 1.7,'X'  : 2.3,'Xp'  : 2.3,'T'  : 2.3,'Tp'  : 2.3,'Aa' : .25,'Aap' : .25,'Ab' : .25,'Abp' : .25,'Fo' : 1.2,'C'   : 1.6,'Cp' : 4.9},
+	'15-17.9 years' : {'A' : 1,'B' : 1,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 4,'S' : 1,'V' : 4,'W' : 1,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 4,'Sp' : 1,'Vp' : 4,'Wp' : 1,'Yp' : 1.75,'I'  : 1.2,'Ip'  : 1.2,'J'  : 1.2,'Jp'  : 1.2,'H'  : .85,'Hp'  : .85,'K'  : .85,'Kp'  : .85,'Wa' : .2,'Wap' : .2,'Wb' : .2,'Wbp' : .2,'Y'  : 1.7,'Yp'  : 1.7,'U'  : 1.7,'Up'  : 1.7,'X'  : 2.55,'Xp'  : 2.55,'T'  : 2.55,'Tp'  : 2.55,'Aa' : .25,'Aap' : .25,'Ab' : .25,'Abp' : .25,'Fo' : .7,'C'   : 1.3,'Cp' : 4.2},
+	'18+ years' : {'A' : 1,'B' : 1,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 4.25,'S' : 1,'V' : 4.25,'W' : 1,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 4.25,'Sp' : 1,'Vp' : 4.25,'Wp' : 1,'Yp' : 1.75,'I'  : 1.2,'Ip'  : 1.2,'J'  : 1.2,'Jp'  : 1.2,'H'  : .85,'Hp'  : .85,'K'  : .85,'Kp'  : .85,'Wa' : .2,'Wap' : .2,'Wb' : .2,'Wbp' : .2,'Y'  : 1.7,'Yp'  : 1.7,'U'  : 1.7,'Up'  : 1.7,'X'  : 2.8,'Xp'  : 2.8,'T'  : 2.8,'Tp'  : 2.8,'Aa' : .25,'Aap' : .25,'Ab' : .25,'Abp' : .25,'Fo' : .5,'C'   : 1,'Cp' : 3}
 }
+// var percentageDataTable = {
+// 	"3-11 months" : {'A' : 1.25,'B' : 1.25,'C' : 11.5,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 2.25,'S' : 1,'T' : 2,'U' : 1.75,'V' : 2.25,'W' : 1,'X' : 2,'Y' : 1.75,'C' : 11.5,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 2.25,'Sp' : 1,'Tp' : 2,'Up' : 1.75,'Vp' : 2.25,'Wp' : 1,'Xp' : 2,'Yp' : 1.75},
+// 	"1-5 years" : {'A' : 1.25,'B' : 1.25,'C' : 10,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 2.75,'S' : 1,'T' : 2,'U' : 1.75,'V' : 2.75,'W' : 1,'X' : 2,'Y' : 1.75,'C' : 10,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 2.75,'Sp' : 1,'Tp' : 2,'Up' : 1.75,'Vp' : 2.75,'Wp' : 1,'Xp' : 2,'Yp' : 1.75},
+// 	"6-7.5 years" : {'A' : 1.25,'B' : 1.25,'C' : 8,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 3.5,'S' : 1,'T' : 2.25,'U' : 1.75,'V' : 3.5,'W' : 1,'X' : 2.25,'Y' : 1.75,'C' : 8,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 3.5,'Sp' : 1,'Tp' : 2.25,'Up' : 1.75,'Vp' : 3.5,'Wp' : 1,'Xp' : 2.25,'Yp' : 1.75},
+// 	"7.5-14.9 years" : {'A' : 1.25,'B' : 1.25,'C' : 6.5,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 3.75,'S' : 1,'T' : 2.5,'U' : 1.75,'V' : 3.75,'W' : 1,'X' : 2.5,'Y' : 1.75,'C' : 6.5,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 3.75,'Sp' : 1,'Tp' : 2.5,'Up' : 1.75,'Vp' : 3.75,'Wp' : 1,'Xp' : 2.5,'Yp' : 1.75},
+// 	'15-17.9 years' : {'A' : 1.25,'B' : 1.25,'C' : 5.5,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 4,'S' : 1,'T' : 2.75,'U' : 1.75,'V' : 4,'W' : 1,'X' : 2.75,'Y' : 1.75,'C' : 5.5,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 4,'Sp' : 1,'Tp' : 2.75,'Up' : 1.75,'Vp' : 4,'Wp' : 1,'Xp' : 2.75,'Yp' : 1.75},
+// 	'18+ years' : {'A' : 1.25,'B' : 1.25,'C' : 4,'D' : 1,'E' : 3.25,'F' : 1.5,'G' : 1,'H' : 1,'I' : 1.25,'J' : 1.25,'K' : 1,'L' : 1,'M' : 1.5,'N' : 3.25,'O' : 3.25,'P' : 3.25,'Q' : 1,'R' : 4.25,'S' : 1,'T' : 3,'U' : 1.75,'V' : 4.25,'W' : 1,'X' : 3,'Y' : 1.75,'C' : 4,'Dp' : 1,'Ep' : 3.25,'Fp' : 1.5,'Gp' : 1,'Hp' : 1,'Ip' : 1.25,'Jp' : 1.25,'Kp' : 1,'Lp' : 1,'Mp' : 1.5,'Np' : 3.25,'Op' : 3.25,'Pp' : 3.25,'Qp' : 2.5,'Z' : 2.5,'Rp' : 4.25,'Sp' : 1,'Tp' : 3,'Up' : 1.75,'Vp' : 4.25,'Wp' : 1,'Xp' : 3,'Yp' : 1.75}
+// }
 
 var combinedRegions = [
-['I', 'J', 'Ip', 'Jp'],
-['F', 'G', 'H', 'M', 'L', 'K', 'Fp', 'Gp', 'Hp', 'Mp', 'Lp', 'Kp'],
-['C'],
-['A', 'B'],
-['D', 'Dp'],
-['E', 'N', 'O', 'P'],
-['Ep', 'Np', 'Op', 'Pp'],
+['I', 'J', 'Ip', 'Jp', 'F', 'G', 'H', 'M', 'L', 'K', 'Fp', 'Gp', 'Hp', 'Mp', 'Lp', 'Kp', 'Wa', 'Wb', 'Wap', 'Wbp'],
+['C','A', 'B','D', 'Dp', 'Cp', 'Fo'],
+['E', 'N', 'O', 'P', 'Ep', 'Np', 'Op', 'Pp'],
 ['Q'],
 ['Qp', 'Z'],
-['V', 'W', 'X', 'R', 'S', 'T', 'Vp', 'Wp', 'Xp', 'Rp', 'Sp', 'Tp'],
-['Y', 'U','Yp', 'Up']
+['V', 'W', 'X', 'R', 'S', 'T', 'Vp', 'Wp', 'Xp', 'Rp', 'Sp', 'Tp', 'Y', 'U','Yp', 'Up', 'Aa', 'Ab', 'Aap', 'Abp']
 ]
 
+// var combinedRegions = [
+// ['I', 'J', 'Ip', 'Jp'],
+// ['F', 'G', 'H', 'M', 'L', 'K', 'Fp', 'Gp', 'Hp', 'Mp', 'Lp', 'Kp'],
+// ['C'],
+// ['A', 'B'],
+// ['D', 'Dp'],
+// ['E', 'N', 'O', 'P'],
+// ['Ep', 'Np', 'Op', 'Pp'],
+// ['Q'],
+// ['Qp', 'Z'],
+// ['V', 'W', 'X', 'R', 'S', 'T', 'Vp', 'Wp', 'Xp', 'Rp', 'Sp', 'Tp'],
+// ['Y', 'U','Yp', 'Up']
+// ]
 function calculateBSA(weight, height) {
 	return 0.007184 * (weight**.425) * (height**.725);
 }
@@ -322,17 +353,12 @@ function proceedToCalculation() {
 
 	// keep track of the total selected area for each region
 	var areaTotals = [
-		{part : 'hands', area : 0},
-		{part : 'arms', area : 0},
-		{part : 'scalp', area : 0},
-		{part : 'cheeks', area : 0},
-		{part : 'neck', area : 0},
-		{part : 'front of the torso', area : 0},
-		{part : 'back of the torso', area : 0},
+		{part : 'upper extremities (arms, wrist, hands)', area : 0},
+		{part : 'head and neck', area : 0},
+		{part : 'trunk (front and back of torso)', area : 0},
 		{part : 'genitals', area : 0},
 		{part : 'buttocks', area : 0},
-		{part : 'legs', area : 0},
-		{part : 'feet', area : 0}
+		{part : 'lower extremities (legs, ankles, feet)', area : 0}
 	]
 
 
@@ -380,29 +406,42 @@ function proceedToCalculation() {
 		var instruction = document.createElement('span');
 		accumulatedTime++;
 		instruction.style["animation-delay"] = accumulatedTime/10+.4+'s';
-		var fl = Math.floor(regionFTU*2)/2;
-		var ce = Math.ceil(regionFTU*2)/2;
+		
+		var roundIncrement = 2;
+		if (regionFTU <= 1) {
+			roundIncrement = 4;
+		}
+		if (regionFTU <= .5) {
+			roundIncrement = 10;
+		}
+		var fl = Math.floor(regionFTU*roundIncrement)/roundIncrement;
+		var ce = Math.ceil(regionFTU*roundIncrement)/roundIncrement;
 		if (ce != 0) {
 			if (fl == ce)
-				instruction.innerHTML = `Use <b>${fl} finger tip units</b> on the ${t.part}.`;
+				instruction.innerHTML = `<b>${fl} FTUs</b> on the ${t.part}.`;
 			else {
 				if (fl == 0)
-					instruction.innerHTML = `Use <b>up to ${ce} finger tip units</b> on the ${t.part}.`;
+					instruction.innerHTML = `<b>up to ${ce} FTUs</b> on the ${t.part}.`;
 				else
-					instruction.innerHTML = `Use <b>${fl} - ${ce} finger tip units</b> on the ${t.part}.`;
+					instruction.innerHTML = `<b>${fl} - ${ce} FTUs</b> on the ${t.part}.`;
 			}
 		}
 		
 		instructionContainer.appendChild(instruction)
 	}
 	document.getElementById("total-ftu").classList.add("start-anim");
-	regionFTUSum = Math.round(regionFTUSum)
-	document.getElementById("total-ftu").innerHTML = "In total, you can use approximately <b>"+regionFTUSum+" Finger Tip Units (FTUs)</b> per treatment.";
+
+	function specialRound(x) {
+		return x <= 1 ? Math.ceil(x*4)/4 : Math.ceil(x)
+	}
+
+	regionFTUSum = specialRound(regionFTUSum); 
+	document.getElementById("total-ftu").innerHTML = "In total, you can use approximately <b>"+regionFTUSum+" FTUs</b> per treatment.";
 
 	
-	document.getElementById("one-week-ftu").innerHTML = "If applied twice daily, that is <b>"+Math.round(regionFTUSum*2*7*.5)+"g</b> of topical steroid for 1 week";
+	document.getElementById("one-week-ftu").innerHTML = "If applied twice daily, that is <b>"+specialRound(regionFTUSum*2*7*.5)+"g</b> of topical steroid for 1 week";
 	document.getElementById("one-week-ftu").classList.add("start-anim");
-	document.getElementById("two-week-ftu").innerHTML = "and <b>"+Math.round(regionFTUSum*2*7*.5*2)+"g</b> of topical steroid for 2 weeks.";
+	document.getElementById("two-week-ftu").innerHTML = "and <b>"+specialRound(regionFTUSum*2*7*.5*2)+"g</b> of topical steroid for 2 weeks.";
 	document.getElementById("two-week-ftu").classList.add("start-anim");
 	
 
