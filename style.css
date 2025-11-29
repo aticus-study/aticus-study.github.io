@@ -330,10 +330,11 @@ div#body-diagram-viewname:not(.reversed div#body-diagram-viewname) {
 
 .faq-text {
 	font-weight: bold;
-	font-size: 1.85rem;
+	font-size: 2.4rem;
 	margin: 0;
 	margin-top:.2rem;
-	font-style: italic;
+	font-style: normal;
+	text-align: left;
 }
 
 .faq-text a {
@@ -466,7 +467,7 @@ header img {
 	padding-right: 2vw;
 }
 .FTU-instruction-container {
-	width: 30vw;
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
@@ -559,7 +560,7 @@ header img {
 #final-page-parent > div {
 	height:45vh;
 	display:grid;
-	grid-template-columns: 3fr 1fr;
+	grid-template-columns: 6fr 5fr;
 }
 .ftu-amount-container {
 	height:45vh;
@@ -696,7 +697,7 @@ header img {
 		width: 100vw;
 	}
 	.faq-text {
-		text-align: center;
+		text-align: left;
 		font-size: 1.6rem;
 		width: 80vw;
 	}

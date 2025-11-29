@@ -74,7 +74,7 @@ function onAgeYearsInputUpdate(el) {
 }
 
 function updateAutofillButton() {
-	var months = parseInt(document.getElementById("age-input-months").value);
+	var months = getNaNCheckedValue(parseInt(document.getElementById("age-input-months").value));
 
 	if (patientData.age_years*12+months > 90) {
 		document.getElementById('adult-front-parent').classList.remove("hidden");
@@ -138,7 +138,7 @@ function showProceedForPg1Inputs() {
 	}
 
 	// console.log(document.getElementById("weight-input-pounds").value, document.getElementById("weight-input-ounces").value, document.getElementById("height-input-feet").value, document.getElementById("height-input-inches").value,(document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
-	if (heightInInches > 0 && weightInOunces > 0 && (heightInInches < 17 || weightInOunces < 6 || heightInInches > 78 || weightInOunces > 4800)) {
+	if (heightInInches > 0 && weightInOunces > 0 && (heightInInches < 12 || weightInOunces < 3 || heightInInches > 96 || weightInOunces > 4800)) {
 		document.getElementById('nonsensical-hw-error').classList.remove('hidden')
 		proceedButton.classList.add('hidden');
 	} else {
@@ -160,7 +160,7 @@ function autofillHeightAndWeight() {
 	doTransitionAndAgeComputation();
 	proceedButton.classList.remove('hidden');
 
-	var months = parseInt(document.getElementById("age-input-months").value);
+	var months = getNaNCheckedValue(parseInt(document.getElementById("age-input-months").value));
 	var sex = document.getElementById("sex-input").value;
 
 	if (patientData.age_years == undefined)
@@ -321,14 +321,28 @@ function doTransitionAndAgeComputation() {
 }
 
 
+function rangeRound(regionFTU) {
+	var roundIncrement = 2;
+	if (regionFTU <= 1) {
+		roundIncrement = 4;
+	}
+	if (regionFTU <= .5) {
+		roundIncrement = 10;
+	}
+	var fl = Math.floor(regionFTU*roundIncrement)/roundIncrement;
+	var ce = Math.ceil(regionFTU*roundIncrement)/roundIncrement;
+
+	return [fl, ce];
+}
+
 function proceedToCalculation() {
 	Array.from(document.getElementsByClassName("restart-button")).forEach(button => button.classList.remove("hidden"));
 	// if proceeding from page-1
 	if (!document.getElementById("page-1").classList.contains("fadeout")) {
 		doTransitionAndAgeComputation();
 
-		var ounces = parseInt(document.getElementById("weight-input-ounces").value);
-		var inches = parseInt(document.getElementById("height-input-inches").value);
+		var ounces = getNaNCheckedValue(parseInt(document.getElementById("weight-input-ounces").value));
+		var inches = getNaNCheckedValue(parseInt(document.getElementById("height-input-inches").value));
 
 
 		if (patientData.weight_lbs == undefined)
@@ -343,7 +357,7 @@ function proceedToCalculation() {
 		patientData.weight = kg;
 		patientData.height = cm;
 		// console.log(patientData)
-		document.getElementById("ftu-explanation").innerHTML = `For a child ${Math.round((patientData.weight_lbs+ounces/16)*10)/10} lbs and ${patientData.height_feet*12+inches} in, you can:`
+		document.getElementById("ftu-explanation").innerHTML = `For the areas you selected in the previous page, you can use the following amounts on a child ${Math.round((patientData.weight_lbs+ounces/16)*10)/10} lbs and ${patientData.height_feet*12+inches} in:`
 		return
 	}
 
@@ -406,16 +420,8 @@ function proceedToCalculation() {
 		var instruction = document.createElement('span');
 		accumulatedTime++;
 		instruction.style["animation-delay"] = accumulatedTime/10+.4+'s';
-		
-		var roundIncrement = 2;
-		if (regionFTU <= 1) {
-			roundIncrement = 4;
-		}
-		if (regionFTU <= .5) {
-			roundIncrement = 10;
-		}
-		var fl = Math.floor(regionFTU*roundIncrement)/roundIncrement;
-		var ce = Math.ceil(regionFTU*roundIncrement)/roundIncrement;
+
+		var [fl,ce] = rangeRound(regionFTU);
 		if (ce != 0) {
 			if (fl == ce)
 				instruction.innerHTML = `<b>${fl} FTUs</b> on the ${t.part}.`;
@@ -431,17 +437,17 @@ function proceedToCalculation() {
 	}
 	document.getElementById("total-ftu").classList.add("start-anim");
 
-	function specialRound(x) {
-		return x <= 1 ? Math.ceil(x*4)/4 : Math.ceil(x)
-	}
+	// function specialRound(x) {
+	// 	return x <= 1 ? Math.ceil(x*4)/4 : Math.ceil(x)
+	// }
 
-	regionFTUSum = specialRound(regionFTUSum); 
-	document.getElementById("total-ftu").innerHTML = "In total, you can use approximately <b>"+regionFTUSum+" FTUs</b> per treatment.";
+	regionFTUSum = rangeRound(regionFTUSum)[1]; 
+	document.getElementById("total-ftu").innerHTML = "In total, you can use approximately <b>"+regionFTUSum+" FTUs</b> or <b>"+regionFTUSum*.5+" grams</b> per treatment.";
 
 	
-	document.getElementById("one-week-ftu").innerHTML = "If applied twice daily, that is <b>"+specialRound(regionFTUSum*2*7*.5)+"g</b> of topical steroid for 1 week";
+	document.getElementById("one-week-ftu").innerHTML = "If applied twice daily, that is <b>"+rangeRound(regionFTUSum*2*7*.5)[1]+"g</b> of topical steroid for 1 week";
 	document.getElementById("one-week-ftu").classList.add("start-anim");
-	document.getElementById("two-week-ftu").innerHTML = "and <b>"+specialRound(regionFTUSum*2*7*.5*2)+"g</b> of topical steroid for 2 weeks.";
+	document.getElementById("two-week-ftu").innerHTML = "and <b>"+rangeRound(regionFTUSum*2*7*.5*2)[1]+"g</b> of topical steroid for 2 weeks.";
 	document.getElementById("two-week-ftu").classList.add("start-anim");
 	
 
