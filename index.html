@@ -42,6 +42,17 @@
       </div>
     </div>
 
+    <div class="modal-container hidden" id="nonsensical-modal">
+      <div class="modal-body">
+        <h3>Notice</h3>
+        <p>
+          The entered height and/or weight are outside of usual range for pediatric patients. Please ensure data is entered correctly and use clinical judgement in evaluating information on the next page.
+        </p>
+        <div class="button-container">
+        <button class="button" onclick="closeNonsensicalModal()">Back to Entry</button><button class="button" onclick="proceedToCalculation()">Continue to Results</button></div>
+      </div>
+    </div>
+
     <div id="pages-container">
     <button class="hidden restart-button" id="restart-button" onclick = "restartProgress(this);">
       <i class="fa-solid fa-arrows-rotate"></i>
@@ -71,7 +82,8 @@
 
 
       <div class="child-information-container" id = "main-page1-dialog">
-        <span id="nonsensical-hw-error" class="hidden" style="color:red; font-size: 1em;">The entered height and/or weight are outside of usual range for pediatric patients. Please ensure data is entered correctly and use clinical judgement in evaluating information on the next page. </span>
+        <span id="nonsensical-hw-error" class="hidden" style="color:#1e1bb5; font-size: 1em;">The entered height and/or weight are outside of usual range for pediatric patients. Please ensure data is entered correctly and use clinical judgement in evaluating information on the next page. </span>
+        <span id="very-nonsensical-hw-error" class="hidden" style="color:red; font-size: 1em;">The entered height and/or weight are far outside of usual range for pediatric patients. Please ensure data is entered correctly. </span>
 
         <div class="child-information-fields-parent">
           <div class="child-information-container-field">

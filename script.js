@@ -138,15 +138,21 @@ function showProceedForPg1Inputs() {
 	}
 
 	// console.log(document.getElementById("weight-input-pounds").value, document.getElementById("weight-input-ounces").value, document.getElementById("height-input-feet").value, document.getElementById("height-input-inches").value,(document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
-	if (heightInInches > 0 && weightInOunces > 0 && (heightInInches < 12 || weightInOunces < 3 || heightInInches > 96 || weightInOunces > 4800)) {
-		document.getElementById('nonsensical-hw-error').classList.remove('hidden')
+	if (heightInInches > 0 && weightInOunces > 0 && (heightInInches < 12 || weightInOunces < 3 || heightInInches > 96 || weightInOunces > 9600)) {
+		document.getElementById('very-nonsensical-hw-error').classList.remove('hidden')
 		proceedButton.classList.add('hidden');
 	} else {
-		document.getElementById('nonsensical-hw-error').classList.add('hidden')
-		if ((document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
+		document.getElementById('very-nonsensical-hw-error').classList.add('hidden')
+		if (heightInInches > 0 && weightInOunces > 0 && (heightInInches < 17 || weightInOunces < 6 || heightInInches > 78 || weightInOunces > 4800)) {
+			document.getElementById('nonsensical-hw-error').classList.remove('hidden')
 			proceedButton.classList.remove('hidden');
-		else
-			proceedButton.classList.add('hidden');
+		} else {
+			document.getElementById('nonsensical-hw-error').classList.add('hidden')
+			if ((document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
+				proceedButton.classList.remove('hidden');
+			else
+				proceedButton.classList.add('hidden');
+		}
 	}
 
 }
@@ -335,7 +341,18 @@ function rangeRound(regionFTU) {
 	return [fl, ce];
 }
 
+function closeNonsensicalModal() {
+	document.getElementById("nonsensical-modal").classList.add("hidden");
+	document.getElementById("nonsensical-hw-error").classList.remove("hidden");
+}
+
 function proceedToCalculation() {
+	if (!document.getElementById("nonsensical-hw-error").classList.contains("hidden")) {
+		document.getElementById("nonsensical-modal").classList.remove("hidden");
+		document.getElementById("nonsensical-hw-error").classList.add("hidden");
+		return
+	}
+	document.getElementById("nonsensical-modal").classList.add("hidden");
 	Array.from(document.getElementsByClassName("restart-button")).forEach(button => button.classList.remove("hidden"));
 	// if proceeding from page-1
 	if (!document.getElementById("page-1").classList.contains("fadeout")) {
@@ -367,12 +384,12 @@ function proceedToCalculation() {
 
 	// keep track of the total selected area for each region
 	var areaTotals = [
-		{part : 'upper extremities (arms, wrist, hands)', area : 0},
+		{part : 'upper extremities', area : 0},
 		{part : 'head and neck', area : 0},
-		{part : 'trunk (front and back of torso)', area : 0},
+		{part : 'trunk', area : 0},
 		{part : 'genitals', area : 0},
 		{part : 'buttocks', area : 0},
-		{part : 'lower extremities (legs, ankles, feet)', area : 0}
+		{part : 'lower extremities', area : 0}
 	]
 
 
