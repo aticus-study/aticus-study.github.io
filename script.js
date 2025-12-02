@@ -140,6 +140,7 @@ function showProceedForPg1Inputs() {
 	// console.log(document.getElementById("weight-input-pounds").value, document.getElementById("weight-input-ounces").value, document.getElementById("height-input-feet").value, document.getElementById("height-input-inches").value,(document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
 	if (heightInInches > 0 && weightInOunces > 0 && (heightInInches < 12 || weightInOunces < 3 || heightInInches > 96 || weightInOunces > 9600)) {
 		document.getElementById('very-nonsensical-hw-error').classList.remove('hidden')
+		document.getElementById('nonsensical-hw-error').classList.add('hidden')
 		proceedButton.classList.add('hidden');
 	} else {
 		document.getElementById('very-nonsensical-hw-error').classList.add('hidden')
