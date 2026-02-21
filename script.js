@@ -71,6 +71,7 @@ function onAgeYearsInputUpdate(el) {
 	localStorage.setItem('age_years',el.value);
 	patientData.age_years = parseInt(el.value);
 	updateAutofillButton()
+	showProceedForPg1Inputs()
 }
 
 function updateAutofillButton() {
@@ -108,6 +109,7 @@ function updateAutofillButton() {
 function onSexInputUpdate(el) {
 	localStorage.setItem('sex',el.value);
 	updateAutofillButton()
+	showProceedForPg1Inputs()
 }
 
 function onWeightPoundsInputUpdate(el) {
@@ -144,12 +146,12 @@ function showProceedForPg1Inputs() {
 		proceedButton.classList.add('hidden');
 	} else {
 		document.getElementById('very-nonsensical-hw-error').classList.add('hidden')
-		if (heightInInches > 0 && weightInOunces > 0 && (heightInInches < 17 || weightInOunces < 6 || heightInInches > 78 || weightInOunces > 4800)) {
+		if ((document.getElementById("sex-input").value != 'none' && document.getElementById("sex-input").value != '' && (document.getElementById("age-input-years").value != 0 || document.getElementById("age-input-months").value != 0)) && heightInInches > 0 && weightInOunces > 0 && (heightInInches < 17 || weightInOunces < 6 || heightInInches > 78 || weightInOunces > 4800)) {
 			document.getElementById('nonsensical-hw-error').classList.remove('hidden')
 			proceedButton.classList.remove('hidden');
 		} else {
 			document.getElementById('nonsensical-hw-error').classList.add('hidden')
-			if ((document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
+			if ((document.getElementById("sex-input").value != 'none' && document.getElementById("sex-input").value != '' && (document.getElementById("age-input-years").value != 0 || document.getElementById("age-input-months").value != 0)) && (document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
 				proceedButton.classList.remove('hidden');
 			else
 				proceedButton.classList.add('hidden');
@@ -201,6 +203,7 @@ function goBackOneStep(button) {
 		document.getElementById("page-2").classList.add("hidden")
 		document.getElementById("page-2").classList.remove("fadein")
 		button.classList.add("hidden");
+	 // add sex and age validation
 		if (shouldAutofillHW || (document.getElementById("weight-input-pounds").value == 0 && document.getElementById("weight-input-ounces").value == 0) || (document.getElementById("height-input-feet").value == 0 && document.getElementById("height-input-inches").value == 0))
 			proceedButton.classList.add('hidden');
 	}

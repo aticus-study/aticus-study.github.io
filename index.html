@@ -80,26 +80,8 @@
         <h1 class="welcome-text">Welcome to the ATICUS Study web application.</h1><h3 class="instruction-text">Please enter the pediatric patient's information to calculate how much topical steroid to use.</h3>
       </div>
 
-
-      <div class="child-information-container" id = "main-page1-dialog">
-        <span id="nonsensical-hw-error" class="hidden" style="color:#1e1bb5; font-size: 1em;">The entered height and/or weight are outside of usual range for pediatric patients. Please ensure data is entered correctly and use clinical judgement in evaluating information on the next page. </span>
-        <span id="very-nonsensical-hw-error" class="hidden" style="color:red; font-size: 1em;">The entered height and/or weight are far outside of usual range for pediatric patients. Please ensure data is entered correctly. </span>
-
-        <div class="child-information-fields-parent">
-          <div class="child-information-container-field">
-            <label for='weight-input'>Weight</label><br>
-            <input id = "weight-input-pounds"  oninput="onWeightPoundsInputUpdate(this);" name='weight-input' value=0 type='number' min = 0> lbs <input id='weight-input-ounces' oninput="updateStorage(this, 'weight_oz');showProceedForPg1Inputs();" type='number' value=0 min = 0 max = 15> oz
-          </div>
-          <div class="child-information-container-field">
-            <label for='height-input'>Height</label><br>
-            <input id = "height-input-feet" oninput="onHeightFeetInputUpdate(this);" name='height-input' value=0 type='number' min = 0> feet <input oninput="updateStorage(this, 'height_inches');showProceedForPg1Inputs();" id='height-input-inches' type='number' value=0 min = 0> inches
-          </div>
-        </div>  
-        <button id="open-autofill-button" onclick = "openAgeSexPrompt();">No Weight or Height? Click for Average by Age and Sex</button>
-      </div>
-
-      <div class="child-information-container hidden" id="secondary-page1-dialog">
-        <h3><i>Enter Sex and Age to use Average</i></h3>
+      <div class="child-information-container" id="secondary-page1-dialog">
+        <!-- <h3><i>Enter Sex and Age to use Average</i></h3> -->
         <span id="age-error" class="hidden" style="color:red; font-size: 1em;">Age must be greater than 0 and less than 20.</span><span id="months-error" class="hidden" style="color:red; font-size: 1em;">Please ensure age is entered correctly - if combining years and months, the number of months should be less than 12.</span>
         <div class="child-information-fields-parent">
        <div class="child-information-container-field">
@@ -118,14 +100,32 @@
       </div> 
       <br>
 
-      <span style="display:grid; grid-template-columns: 1fr 1fr; grid-column-gap: 10px;">
+      <button disabled id="autofill-button" onclick = "autofillHeightAndWeight();">No Weight or Height? Click for Average by Age and Sex</button>
+
+      <!-- <span style="display:grid; grid-template-columns: 1fr 1fr; grid-column-gap: 10px;">
       <button id="autofill-back-button" onclick = "closeAgeSexPrompt();"><i class="fa-solid fa-caret-left"></i> Go Back
         </button>
       <button disabled id="autofill-button" onclick = "autofillHeightAndWeight();">Next Step
           <i class="fa-solid fa-caret-right"></i>
         </button>
-        </span>
+        </span> -->
 
+      </div>
+
+      <div class="child-information-container" id = "main-page1-dialog">
+        <span id="nonsensical-hw-error" class="hidden" style="color:#1e1bb5; font-size: 1em;">The entered height and/or weight are outside of usual range for pediatric patients. Please ensure data is entered correctly and use clinical judgement in evaluating information on the next page. </span>
+        <span id="very-nonsensical-hw-error" class="hidden" style="color:red; font-size: 1em;">The entered height and/or weight are far outside of usual range for pediatric patients. Please ensure data is entered correctly. </span>
+
+        <div class="child-information-fields-parent">
+          <div class="child-information-container-field">
+            <label for='weight-input'>Weight</label><br>
+            <input id = "weight-input-pounds"  oninput="onWeightPoundsInputUpdate(this);" name='weight-input' value=0 type='number' min = 0> lbs <input id='weight-input-ounces' oninput="updateStorage(this, 'weight_oz');showProceedForPg1Inputs();" type='number' value=0 min = 0 max = 15> oz
+          </div>
+          <div class="child-information-container-field">
+            <label for='height-input'>Height</label><br>
+            <input id = "height-input-feet" oninput="onHeightFeetInputUpdate(this);" name='height-input' value=0 type='number' min = 0> feet <input oninput="updateStorage(this, 'height_inches');showProceedForPg1Inputs();" id='height-input-inches' type='number' value=0 min = 0> inches
+          </div>
+        </div>  
       </div>
 
   		<!-- <h1 class="welcome-text">Welcome to the ATICUS Study web application.</h1><h3 class="instruction-text">Please select the age of your child:</h3>
