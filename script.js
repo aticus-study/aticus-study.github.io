@@ -127,17 +127,17 @@ function onHeightFeetInputUpdate(el) {
 function showProceedForPg1Inputs() {
 	var heightInInches = getNaNCheckedValue(parseInt(document.getElementById("height-input-feet").value))*12+getNaNCheckedValue(parseInt(document.getElementById("height-input-inches").value));
 	var weightInOunces = getNaNCheckedValue(parseInt(document.getElementById("weight-input-pounds").value))*16 + getNaNCheckedValue(parseInt(document.getElementById("weight-input-ounces").value));
-	if (heightInInches*2.54 > 124) {
-		document.getElementById('adult-front-parent').classList.remove("hidden");
-		document.getElementById('adult-back-parent').classList.remove("hidden");
-		document.getElementById('front-parent').classList.add("hidden");
-		document.getElementById('back-parent').classList.add("hidden");
-	} else {
-		document.getElementById('adult-front-parent').classList.add("hidden");
-		document.getElementById('adult-back-parent').classList.add("hidden");
-		document.getElementById('front-parent').classList.remove("hidden");
-		document.getElementById('back-parent').classList.remove("hidden");
-	}
+	// if (heightInInches*2.54 > 124) {
+	// 	document.getElementById('adult-front-parent').classList.remove("hidden");
+	// 	document.getElementById('adult-back-parent').classList.remove("hidden");
+	// 	document.getElementById('front-parent').classList.add("hidden");
+	// 	document.getElementById('back-parent').classList.add("hidden");
+	// } else {
+	// 	document.getElementById('adult-front-parent').classList.add("hidden");
+	// 	document.getElementById('adult-back-parent').classList.add("hidden");
+	// 	document.getElementById('front-parent').classList.remove("hidden");
+	// 	document.getElementById('back-parent').classList.remove("hidden");
+	// }
 
 	// console.log(document.getElementById("weight-input-pounds").value, document.getElementById("weight-input-ounces").value, document.getElementById("height-input-feet").value, document.getElementById("height-input-inches").value,(document.getElementById("weight-input-pounds").value != 0 || document.getElementById("weight-input-ounces").value != 0) && (document.getElementById("height-input-feet").value != 0 || document.getElementById("height-input-inches").value != 0))
 	if (heightInInches > 0 && weightInOunces > 0 && (heightInInches < 12 || weightInOunces < 3 || heightInInches > 96 || weightInOunces > 9600)) {
@@ -165,6 +165,15 @@ function getNaNCheckedValue(v) {
 }
 
 function autofillHeightAndWeight() {
+	patientData.weight = undefined;
+	patientData.height = undefined;
+
+	patientData.weight_lbs = undefined;
+	patientData.weight_oz = undefined;
+	patientData.height_feet = undefined;
+	patientData.height_inches = undefined;
+
+
 	Array.from(document.getElementsByClassName("restart-button")).forEach(button => button.classList.remove("hidden"));
 	doTransitionAndAgeComputation();
 	proceedButton.classList.remove('hidden');
@@ -549,7 +558,7 @@ function restartProgress(button) {
 
 	Array.from(document.getElementsByClassName("restart-button")).forEach(button => button.classList.add("hidden"));
 
-	closeAgeSexPrompt()
+	// closeAgeSexPrompt()
 
 	Array.from(document.getElementsByClassName("body-part-fill")).forEach(part => {
 		part.classList.remove("filled")
