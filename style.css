@@ -641,21 +641,18 @@ header img {
 		left: 0;
 	}
 	#proceed-button, #back-button, #restart-button-bar {
-		width: 30vw;
-		height: 13vh;
-		flex-direction: column;
+		width: 35vw;
+		height: 5vh;
+		flex-direction: row;
 	}
 	#button-container {
-		bottom: 10vh;
-	}
-	#back-button {
-		flex-direction: column-reverse;
+		bottom: 1vh;
 	}
 	#proceed-button i, #back-button i {
-		font-size: 6rem;
+		font-size: 3rem;
 	}
 	#restart-button-bar i {
-		font-size: 4rem;
+		font-size: 2rem;
 	}
 	#restart-button {
 		top: 15px;
