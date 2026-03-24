@@ -742,7 +742,10 @@ header img {
 		left: 30%;
 		right: 30%;
 		justify-content: center;
-		bottom: 5vh;
+		bottom: 14vh;
+	}
+	#disclaimer-modal .modal-body p.last {
+		margin-bottom: 30vh;
 	}
 }
 
